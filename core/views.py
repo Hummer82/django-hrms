@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_str, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from django.contrib.auth.forms import SetPasswordForm
@@ -38,7 +38,7 @@ def employer_signup(request):
             message = render_to_string('registration/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'uid': urlsafe_base64_encode(force_str(user.pk)),
                 'token': account_activation_token.make_token(user)
             })
             user.email_user(subject, message, from_email='django.hrms.system@gmail.com')
@@ -173,7 +173,7 @@ def employee_add(request):
             message = render_to_string('registration/account_activation_email.html', {
                 'user': employee,
                 'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(employee.pk)),
+                'uid': urlsafe_base64_encode(force_str(employee.pk)),
                 'token': account_activation_token.make_token(employee)
             })
             employee.email_user(subject, message, from_email='django.hrms.system@gmail.com')
